@@ -3,3 +3,18 @@ Jul 17 16:04:57 dny2d1sif02 rsyslogd[29541]: error during parsing file /etc/rsys
 Jul 17 16:04:57 dny2d1sif02 rsyslogd[29541]: [origin software="rsyslogd" swVersion="8.2102.0-5.el8" x-pid="295>
 Jul 17 16:04:57 dny2d1sif02 systemd[1]: Started System Logging Service.
 Jul 17 16:04:57 dny2d1sif02 rsyslogd[29541]: imjournal: journal files changed, reloading...  [v8.2102.0-5.el
+
+
+# Load the imfile module
+module(load="imfile" PollingInterval="10")
+
+# Define the input file
+input(type="imfile"
+      File="/var/log/esxi/esxi-crc.log"
+      Tag="esxi-log"
+      StateFile="state-esxi-crc-log")
+
+# Forward logs to QRadar
+if $programname == 'esxi-crc-log' then @@172.21.32.47:514
+
+
